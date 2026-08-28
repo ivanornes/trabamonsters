@@ -9,7 +9,7 @@
    seguirán sirviendo la copia vieja indefinidamente, que es la forma clásica
    de volverse loco depurando una PWA. */
 
-var VERSION = 'trabamonsters-v1';
+var VERSION = 'trabamonsters-v2';
 
 var RECURSOS = [
   './',

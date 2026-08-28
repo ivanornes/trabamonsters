@@ -50,6 +50,18 @@
   --tam-palabra: clamp(2.6rem, 13vmin, 8rem);
 
   --fuente: 'Fredoka', 'Trebuchet MS', 'Verdana', system-ui, -apple-system, sans-serif;
+
+  /* Zonas seguras de iOS (notch, isla dinámica, barra de inicio). El fondo
+     llega hasta el borde físico de la pantalla —de eso va `viewport-fit=cover`
+     en el <meta viewport>— pero nada pulsable ni legible entra en estas franjas.
+
+     Van en variables por dos motivos: se reutilizan en varios sitios, y así se
+     puede simular un notch desde la consola para probar el layout sin iPhone:
+       document.documentElement.style.setProperty('--sa-t', '59px')  */
+  --sa-t: env(safe-area-inset-top, 0px);
+  --sa-r: env(safe-area-inset-right, 0px);
+  --sa-b: env(safe-area-inset-bottom, 0px);
+  --sa-l: env(safe-area-inset-left, 0px);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -103,7 +115,14 @@ body {
   z-index: 1;
   display: none;
   flex-direction: column;
-  padding: max(12px, env(safe-area-inset-top)) 14px max(14px, env(safe-area-inset-bottom));
+  /* Los cuatro lados, no sólo arriba y abajo: en horizontal el notch se come
+     un lateral entero, y ahí es donde viven el botón de salir y los paneles
+     de combate. */
+  padding:
+    max(12px, var(--sa-t))
+    max(14px, var(--sa-r))
+    max(14px, var(--sa-b))
+    max(14px, var(--sa-l));
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
