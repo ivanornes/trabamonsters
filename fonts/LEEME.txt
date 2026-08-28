@@ -1,0 +1,10 @@
+Fredoka
+Copyright The Fredoka Project Authors (https://github.com/googlefonts/fredoka)
+
+Distribuida bajo la SIL Open Font License, Version 1.1.
+Texto completo de la licencia: https://openfontlicense.org
+
+Aquí sólo están los subconjuntos latin y latin-ext (34 KB en total), extraídos
+de Google Fonts. Se sirven desde el propio repositorio y no desde un CDN porque
+la app es una PWA que tiene que funcionar sin conexión: un @import a un dominio
+externo dejaría la tipografía fuera de la caché offline.

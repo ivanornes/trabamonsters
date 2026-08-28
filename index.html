@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#1b1033">
+<meta name="description" content="Entrenamiento de lectura: sílabas trabadas, combates y monstruos que evolucionan.">
+<title>Trabamonsters</title>
+
+<!-- PWA: se instala en la pantalla de inicio y funciona sin conexión. -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Trabamonsters">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+
+<!-- La tipografía se sirve desde el repo (css/base.css): sin conexión, un
+     @import a Google Fonts dejaría la fuente fuera de la caché offline. -->
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/screens.css">
+</head>
+<body>
+
+<div class="fondo" aria-hidden="true">
+  <span class="blob blob--1"></span>
+  <span class="blob blob--2"></span>
+  <span class="blob blob--3"></span>
+  <span class="blob blob--4"></span>
+</div>
+
+<!-- ============================================================ INICIO -->
+<section id="pantalla-inicio" class="pantalla pantalla--activa">
+  <div class="inicio">
+    <h1 class="titulo">Traba<span>monsters</span></h1>
+    <p class="lema">sílabas veloces</p>
+    <div id="inicio-racha" class="racha"></div>
+
+    <div id="inicio-criatura" class="inicio-criatura"></div>
+
+    <p id="inicio-sub" class="inicio-sub"></p>
+
+    <button id="btn-jugar" class="btn btn--gigante" type="button">
+      <span class="btn-icono-grande">▶</span> ¡JUGAR!
+      <small>5 minutos</small>
+    </button>
+
+    <div class="inicio-secundarios">
+      <button id="btn-album" class="btn btn--sec" type="button">📖 Mi álbum</button>
+      <button id="btn-adulto" class="btn btn--candado" type="button" title="Mantén pulsado 2 segundos">
+        🔒
+        <span class="candado-progreso"></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== JUEGO -->
+<section id="pantalla-juego" class="pantalla" aria-hidden="true">
+  <header class="juego-top">
+    <button id="btn-salir" class="btn-redondo" type="button" aria-label="Salir">✕</button>
+    <div id="barra-sesion" class="barra-sesion"></div>
+    <div id="etiqueta-bloque" class="etiqueta-bloque"></div>
+  </header>
+
+  <!-- Toda esta zona es el botón de "ya la he leído": diana enorme -->
+  <div id="zona-juego" class="zona-juego">
+    <div id="combate-hud" class="combate-hud"></div>
+    <div id="tarjeta-host" class="tarjeta-host"></div>
+    <div id="combo" class="combo"></div>
+    <div class="pista-toque">toca cuando la hayas leído</div>
+  </div>
+
+  <footer class="juego-bottom">
+    <button id="btn-fallo" class="btn btn--fallo" type="button">✕ le costó</button>
+    <div id="mini-criatura" class="mini-criatura criatura criatura--viva"></div>
+    <button id="btn-voz" class="btn btn--voz" type="button">🔊 ¿cómo suena?</button>
+  </footer>
+</section>
+
+<!-- ============================================================ RESUMEN -->
+<section id="pantalla-resumen" class="pantalla" aria-hidden="true">
+  <div class="hoja">
+    <h2 id="resumen-titulo" class="hoja-titulo"></h2>
+    <div id="resumen-cuerpo"></div>
+    <div class="acciones">
+      <button id="btn-resumen-album" class="btn btn--sec" type="button">📖 Mi álbum</button>
+      <button id="btn-resumen-inicio" class="btn" type="button">Listo</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== ÁLBUM -->
+<section id="pantalla-album" class="pantalla" aria-hidden="true">
+  <div class="hoja">
+    <header class="hoja-cabecera">
+      <button id="btn-album-volver" class="btn-redondo" type="button" aria-label="Volver">←</button>
+      <h2 class="hoja-titulo">Mi álbum</h2>
+      <span id="album-contador" class="album-contador"></span>
+    </header>
+    <div id="album-grid" class="album-grid"></div>
+  </div>
+</section>
+
+<!-- ============================================================= ADULTO -->
+<section id="pantalla-adulto" class="pantalla" aria-hidden="true">
+  <div class="hoja">
+    <header class="hoja-cabecera">
+      <button id="btn-adulto-volver" class="btn-redondo" type="button" aria-label="Volver">←</button>
+      <h2 class="hoja-titulo">Progreso</h2>
+      <span></span>
+    </header>
+    <div id="adulto-cuerpo"></div>
+  </div>
+</section>
+
+<!-- ============================================================ OVERLAYS -->
+<div id="overlay-evolucion" class="overlay" aria-hidden="true"></div>
+<div id="overlay-ficha" class="overlay" aria-hidden="true"></div>
+<div id="capa-efectos" class="capa-efectos" aria-hidden="true"></div>
+
+<script src="js/data/silabas.js"></script>
+<script src="js/data/palabras.js"></script>
+<script src="js/data/criaturas.js"></script>
+<script src="js/data/rivales.js"></script>
+<script src="js/core/storage.js"></script>
+<script src="js/core/modelo.js"></script>
+<script src="js/core/combate.js"></script>
+<script src="js/core/audio.js"></script>
+<script src="js/core/anim.js"></script>
+<script src="js/core/debug.js"></script>
+<script src="js/ui/criatura.js"></script>
+<script src="js/ui/router.js"></script>
+<script src="js/ui/tarjeta.js"></script>
+<script src="js/ui/modoSilabas.js"></script>
+<script src="js/ui/modoCombate.js"></script>
+<script src="js/ui/modoPalabras.js"></script>
+<script src="js/ui/modoRafaga.js"></script>
+<script src="js/ui/resumen.js"></script>
+<script src="js/ui/album.js"></script>
+<script src="js/ui/panelAdulto.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+/* Registro del service worker.
+
+   Sólo con http(s): desde file:// los service workers no existen, y ahí no
+   hacen falta porque el fichero ya está en el disco. El try/catch es para que
+   un navegador sin soporte no tumbe el arranque del juego. */
+(function () {
+  'use strict';
+  if (!('serviceWorker' in navigator)) return;
+  if (location.protocol === 'file:') return;
+  window.addEventListener('load', function () {
+    try {
+      navigator.serviceWorker.register('sw.js').catch(function (e) {
+        console.warn('[pwa] no se pudo registrar el service worker', e);
+      });
+    } catch (e) {
+      console.warn('[pwa] service worker no disponible', e);
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+._*
+
+# Windows (el repo es público: puede clonarlo cualquiera)
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Claude Code: la config del servidor de pruebas (.claude/launch.json) sí se
+# versiona porque le sirve a cualquiera que abra el proyecto; los permisos
+# locales de la máquina, no.
+.claude/settings.local.json
+
+# El progreso vive en el localStorage del navegador, no en el repo. Esto es el
+# nombre exacto con el que exporta el panel de adulto: si guardas una copia con
+# otro nombre, sí acabaría versionada.
+trabamonsters-*.json
+
+# Por si algún día entra un empaquetador
+node_modules/
+dist/
+*.log

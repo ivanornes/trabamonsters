@@ -1,0 +1,179 @@
+/* Animaciones. Las que dependen de una trayectoria concreta (partículas,
+   confeti) se hacen desde JS; aquí están las de estado y las que se repiten. */
+
+@keyframes entrar-pantalla {
+  from { opacity: 0; transform: translateY(18px) scale(.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes aparecer {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* La sílaba entra con rebote: llama la atención sin marear. */
+@keyframes tarjeta-pop {
+  0%   { opacity: 0; transform: scale(.4) rotate(-6deg); }
+  60%  { opacity: 1; transform: scale(1.08) rotate(2deg); }
+  80%  { transform: scale(.97) rotate(-1deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes tarjeta-fuera {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(1.35); }
+}
+
+@keyframes tarjeta-esfuma {
+  from { opacity: 1; filter: blur(0); transform: scale(1); }
+  to   { opacity: 0; filter: blur(10px); transform: scale(.9); }
+}
+
+/* Rebote de "estoy viva" de las criaturas. */
+@keyframes flotar {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50%      { transform: translateY(-8px) rotate(1deg); }
+}
+
+/* Parpadeo: los párpados bajan un instante cada pocos segundos. */
+@keyframes parpadeo {
+  0%, 92%, 100% { transform: scaleY(0); }
+  95%, 97%      { transform: scaleY(1); }
+}
+
+@keyframes latido-aura {
+  0%, 100% { transform: scale(1);    opacity: .28; }
+  50%      { transform: scale(1.12); opacity: .45; }
+}
+
+@keyframes chispear {
+  0%, 100% { opacity: .25; transform: scale(.7); }
+  50%      { opacity: 1;   transform: scale(1.2); }
+}
+
+@keyframes vibrar-carga {
+  0%, 100% { transform: translateX(0) scale(1); }
+  25%      { transform: translateX(-5px) scale(1.02); }
+  75%      { transform: translateX(5px) scale(1.02); }
+}
+
+@keyframes estallar-nueva {
+  0%   { transform: scale(.3); opacity: 0; }
+  55%  { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+@keyframes aro-vaciar {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: 1; }
+}
+
+@keyframes aro-encoger {
+  from { transform: translate(-50%, -50%) scale(1); opacity: .9; }
+  to   { transform: translate(-50%, -50%) scale(.05); opacity: .3; }
+}
+
+/* Golpe recibido: destello, nunca un rojo agresivo a pantalla completa. */
+@keyframes recibir-golpe {
+  0%   { filter: none; }
+  30%  { filter: brightness(2.2) saturate(.2); transform: scale(.93); }
+  100% { filter: none; }
+}
+
+@keyframes caer-ko {
+  0%   { opacity: 1; transform: rotate(0) translateY(0); }
+  100% { opacity: 0; transform: rotate(24deg) translateY(40px); }
+}
+
+@keyframes entrar-rival {
+  0%   { opacity: 0; transform: translateX(60px) scale(.7); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes subir-nivel {
+  0%   { opacity: 0; transform: scale(.5); }
+  35%  { opacity: 1; transform: scale(1.15); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulso-pista {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: .6; }
+}
+
+@keyframes deriva {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(3vmin, -2vmin) scale(1.08); }
+  66%      { transform: translate(-2vmin, 3vmin) scale(.94); }
+}
+
+/* ------------------------------------------------------- clases aplicadas */
+
+.blob { animation: deriva 18s ease-in-out infinite; }
+.blob--2 { animation-duration: 23s; animation-delay: -4s; }
+.blob--3 { animation-duration: 15s; animation-delay: -9s; }
+.blob--4 { animation-duration: 27s; animation-delay: -14s; }
+
+.criatura--viva .criatura-svg { animation: flotar 3.2s ease-in-out infinite; }
+.criatura-svg .cr-parpados ellipse { fill: currentColor; }
+.criatura-svg .cr-parpados {
+  color: #2a2140;
+  transform-origin: center;
+  animation: parpadeo 5.4s ease-in-out infinite;
+}
+.criatura-svg .cr-aura   { animation: latido-aura 2.6s ease-in-out infinite; }
+.criatura-svg .cr-chispas circle { animation: chispear 1.8s ease-in-out infinite; }
+.criatura-svg .cr-chispas circle:nth-child(2) { animation-delay: .5s; }
+.criatura-svg .cr-chispas circle:nth-child(3) { animation-delay: 1s; }
+.criatura-svg .cr-antenas .cr-bola { animation: chispear 2.2s ease-in-out infinite; }
+
+/* Las llamas titilan y la aureola late: detalles que hacen que la criatura
+   parezca encendida aunque esté quieta. */
+.criatura-svg .cr-llamitas { animation: titilar 1.1s ease-in-out infinite; transform-origin: center bottom; }
+.criatura-svg .cr-aureola  { animation: chispear 2.8s ease-in-out infinite; }
+.criatura-svg .cr-gema     { animation: chispear 2.4s ease-in-out infinite; }
+.criatura-svg .cr-cola,
+.criatura-svg .cr-tentaculos { animation: mecer 2.6s ease-in-out infinite; transform-origin: center top; }
+
+@keyframes titilar {
+  0%, 100% { transform: scaleY(1)    translateY(0); }
+  50%      { transform: scaleY(1.16) translateY(-2px); }
+}
+
+@keyframes mecer {
+  0%, 100% { transform: rotate(-2.5deg); }
+  50%      { transform: rotate(2.5deg); }
+}
+
+.tarjeta--entra  { animation: tarjeta-pop .32s cubic-bezier(.34, 1.56, .64, 1) both; }
+.tarjeta--sale   { animation: tarjeta-fuera .3s ease-in forwards; }
+.tarjeta--esfuma { animation: tarjeta-esfuma .38s ease-in forwards; }
+.tarjeta--pista  { animation: pulso-pista .8s ease-in-out infinite; }
+
+.evo-escena--carga { animation: vibrar-carga .32s ease-in-out infinite; }
+.evo-escena--nueva { animation: estallar-nueva .7s cubic-bezier(.34, 1.56, .64, 1); }
+
+.aro-tiempo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 118%;
+  aspect-ratio: 1;
+  border: 8px solid var(--color-fam, #fff);
+  border-radius: 50%;
+  opacity: .9;
+  pointer-events: none;
+  animation: aro-encoger var(--dur, 2000ms) linear forwards;
+}
+
+/* -------------------------------------------- respeto al movimiento reducido */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .05ms !important;
+  }
+  .aro-tiempo { animation: aro-encoger var(--dur, 2000ms) linear forwards !important; }
+  .blob { animation: none; }
+}

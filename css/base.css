@@ -1,0 +1,273 @@
+/* Fundamentos: variables, reset, tipografía y el fondo animado.
+   Todo con unidades relativas para que el mismo layout valga en móvil,
+   tablet y ordenador sin puntos de ruptura por dispositivo. */
+
+/* Fredoka, servida desde el repo y no desde Google Fonts: al ser una PWA que
+   debe funcionar sin conexión, una fuente en un dominio externo se quedaría
+   fuera de la caché. Es variable, así que un fichero cubre los tres pesos.
+   Licencia y atribución en fonts/LEEME.txt. */
+@font-face {
+  font-family: 'Fredoka';
+  font-style: normal;
+  font-weight: 500 700;
+  font-display: swap;
+  src: url('../fonts/fredoka-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Fredoka';
+  font-style: normal;
+  font-weight: 500 700;
+  font-display: swap;
+  src: url('../fonts/fredoka-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+  --fondo:      #1b1033;
+  --fondo-2:    #2b1857;
+  --papel:      #fffdf8;
+  --papel-2:    #f3eeff;
+  --tinta:      #241a35;
+  --tinta-suave:#6b6280;
+  --acento:     #7c5cff;
+  --acento-2:   #c9b8ff;
+  --exito:      #29d398;
+  --calido:     #ffd166;
+  --rosa:       #ff6b9d;
+
+  --radio:   26px;
+  --radio-s: 16px;
+  --sombra:   0 18px 40px rgba(10, 4, 30, .35);
+  --sombra-s: 0 8px 20px rgba(10, 4, 30, .25);
+
+  /* Escala tipográfica fluida: la sílaba manda sobre todo lo demás. */
+  --tam-silaba: clamp(5rem, 26vmin, 16rem);
+  --tam-palabra: clamp(2.6rem, 13vmin, 8rem);
+
+  --fuente: 'Fredoka', 'Trebuchet MS', 'Verdana', system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--fuente);
+  background: var(--fondo);
+  color: var(--papel);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+/* ------------------------------------------------------------ fondo vivo */
+
+.fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(120% 90% at 20% 0%, #3a1f7a 0%, transparent 55%),
+    radial-gradient(110% 80% at 90% 100%, #6a2b8a 0%, transparent 55%),
+    linear-gradient(160deg, var(--fondo) 0%, var(--fondo-2) 100%);
+  overflow: hidden;
+}
+
+.blob {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  filter: blur(38px);
+  opacity: .32;
+}
+.blob--1 { width: 42vmin; height: 42vmin; background: #ff6b9d; top: -8vmin; left: -6vmin; }
+.blob--2 { width: 36vmin; height: 36vmin; background: #4ecdc4; bottom: -10vmin; right: -6vmin; }
+.blob--3 { width: 28vmin; height: 28vmin; background: #ffd166; top: 45%; left: 62%; }
+.blob--4 { width: 30vmin; height: 30vmin; background: #7c5cff; bottom: 18%; left: 8%; }
+
+/* ------------------------------------------------------------- pantallas */
+
+.pantalla {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: none;
+  flex-direction: column;
+  padding: max(12px, env(safe-area-inset-top)) 14px max(14px, env(safe-area-inset-bottom));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pantalla--activa {
+  display: flex;
+  animation: entrar-pantalla .38s cubic-bezier(.22, 1, .36, 1);
+}
+
+/* --------------------------------------------------------------- botones */
+
+.btn {
+  font-family: inherit;
+  font-weight: 600;
+  font-size: clamp(1rem, 2.4vmin, 1.25rem);
+  color: var(--tinta);
+  background: var(--papel);
+  border: none;
+  border-radius: var(--radio);
+  padding: .85em 1.4em;
+  cursor: pointer;
+  box-shadow: var(--sombra-s);
+  transition: transform .14s cubic-bezier(.34, 1.56, .64, 1), box-shadow .14s, filter .14s;
+}
+.btn:hover   { filter: brightness(1.04); }
+.btn:active  { transform: scale(.95); }
+.btn:focus-visible { outline: 3px solid var(--calido); outline-offset: 3px; }
+
+.btn--gigante {
+  font-size: clamp(1.6rem, 6vmin, 3rem);
+  font-weight: 700;
+  padding: .6em 1.5em;
+  color: #2a1050;
+  background: linear-gradient(150deg, #ffe27a, #ffb037);
+  box-shadow: 0 14px 0 #cf7c14, var(--sombra);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .1em;
+  line-height: 1.05;
+}
+.btn--gigante small {
+  font-size: .34em;
+  font-weight: 600;
+  opacity: .75;
+  letter-spacing: .04em;
+}
+.btn--gigante:active { transform: translateY(6px) scale(.99); box-shadow: 0 8px 0 #cf7c14, var(--sombra); }
+.btn-icono-grande { font-size: .8em; }
+
+.btn--sec {
+  background: rgba(255, 255, 255, .14);
+  color: var(--papel);
+  backdrop-filter: blur(6px);
+  border: 2px solid rgba(255, 255, 255, .2);
+}
+
+.btn--peligro { background: #ff6b6b; color: #fff; }
+
+.btn-redondo {
+  font-family: inherit;
+  font-size: 1.3rem;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .16);
+  color: var(--papel);
+  cursor: pointer;
+  transition: transform .14s, background .14s;
+}
+.btn-redondo:hover  { background: rgba(255, 255, 255, .26); }
+.btn-redondo:active { transform: scale(.9); }
+
+/* ------------------------------------------------------------- elementos */
+
+/* Ojo: `flex:1` aquí colapsaría la altura dentro de un contenedor en columna
+   (flex-basis 0 en el eje vertical). Por eso la barra no crece por defecto y
+   son los contextos en fila los que le dicen que se estire. */
+.barra {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .16);
+  overflow: hidden;
+}
+.barra--mini { height: 9px; }
+.barra-relleno {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  transition: width .9s cubic-bezier(.22, 1, .36, 1);
+}
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chip {
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--tinta);
+  background: var(--papel-2);
+  border: 2px solid rgba(0, 0, 0, .08);
+  border-radius: 999px;
+  padding: .3em .8em;
+}
+
+.nota {
+  font-size: .88rem;
+  font-weight: 500;
+  color: var(--tinta-suave);
+  line-height: 1.45;
+}
+
+/* --------------------------------------------------------------- efectos */
+
+.capa-efectos {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particula { position: absolute; border-radius: 50%; will-change: transform, opacity; }
+
+.flotante {
+  position: absolute;
+  font-size: clamp(1.2rem, 3.4vmin, 2rem);
+  font-weight: 700;
+  white-space: nowrap;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, .45);
+  will-change: transform, opacity;
+}
+.flotante--bien  { color: var(--calido); }
+.flotante--ok    { color: var(--papel); }
+.flotante--lento { color: var(--acento-2); font-size: clamp(1rem, 2.6vmin, 1.5rem); }
+
+.onda {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border: 5px solid;
+  border-radius: 50%;
+  will-change: transform, opacity;
+}
+
+.destello {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+}
+
+/* --------------------------------------------------------------- overlay */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(12, 6, 28, .82);
+  backdrop-filter: blur(8px);
+}
+.overlay--visible { display: flex; animation: aparecer .3s ease; }
